@@ -53,7 +53,7 @@ class EmailVerifyRecord(models.Model):
 
     # 重载str方法使后台不再直接显示object
     def __str__(self):
-        return '{0}({1})'.format(self.code, self.email)
+        return '{0} ({1})'.format(self.code, self.email)
 
 
 # 轮播图model
