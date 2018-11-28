@@ -8,7 +8,8 @@ from django.views.generic.base import View
 from users.forms import LoginForm
 from users.models import UserProfile
 
-#重写authenticate
+
+# 重写authenticate
 class CustomBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
@@ -24,6 +25,11 @@ class CustomBackend(ModelBackend):
             return None
 
 
+class RegisterView(View):
+    def get(self, request):
+        return render(request, "register.html")
+
+
 class LoginView(View):
     def get(self, request):
         redirect_url = request.GET.get('next', '')
@@ -33,9 +39,9 @@ class LoginView(View):
 
     def post(self, request):
         login_form = LoginForm(request.POST)
-        if not login_form.is_valid():
-            username = login_form.username
-            password = login_form.password
+        if login_form.is_valid():
+            username = request.POST.get("username", "")
+            password = request.POST.get("password", "")
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -45,6 +51,3 @@ class LoginView(View):
 
         else:
             return render(request, "login.html", {"login_form": login_form})
-
-
-
