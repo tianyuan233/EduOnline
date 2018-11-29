@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'operation',
     'organization',
     'xadmin',
-    'crispy_forms'
+    'crispy_forms',
+    'captcha'
 ]
 
 AUTH_USER_MODEL = 'users.UserProfile'
@@ -147,3 +148,11 @@ STATICFILES_DIRS = [
 # 设置我们上传文件的路径
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+EMAIL_HOST = "smtp.qq.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "1406282384@qq.com"
+EMAIL_HOST_PASSWORD = "hyhotmywiscpbaaa"
+EMAIL_USE_TLS= True
+EMAIL_FROM = "1406282384@qq.com"

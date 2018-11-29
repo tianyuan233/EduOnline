@@ -2,14 +2,19 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
 # 并集运算
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic.base import View
-
-from users.forms import LoginForm
+from django.contrib.auth.hashers import make_password
+from users.forms import LoginForm, RegisterForm
 from users.models import UserProfile
 
 
 # 重写authenticate
+from utils.email_send import send_register_eamil
+
+
 class CustomBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
@@ -27,7 +32,36 @@ class CustomBackend(ModelBackend):
 
 class RegisterView(View):
     def get(self, request):
-        return render(request, "register.html")
+        register_form = RegisterForm()
+        return render(request, "register.html", {'register_form':register_form})
+    def post(self, request):
+        register_form = RegisterForm(request.POST)
+        if register_form.is_valid():
+            user_name = request.POST.get("email", "")
+            # 用户查重
+            if UserProfile.objects.filter(email=user_name):
+                return render(
+                    request, "register.html", {
+                        "register_form": register_form, "msg": "用户已存在"})
+            pass_word = request.POST.get("password", "")
+
+            # 实例化一个user_profile对象，将前台值存入
+            user_profile = UserProfile()
+            user_profile.username = user_name
+            user_profile.email = user_name
+
+            # 默认激活状态为false
+            user_profile.is_active = False
+
+            # 加密password进行保存
+            user_profile.password = make_password(pass_word)
+            user_profile.save()
+            send_register_eamil(user_name, "register")
+            return render(request, "login.html", )
+        else:
+            return render(
+                request, "register.html", {
+                    "register_form": register_form})
 
 
 class LoginView(View):
@@ -38,16 +72,43 @@ class LoginView(View):
         })
 
     def post(self, request):
+        # 类实例化需要一个字典参数dict:request.POST就是一个QueryDict所以直接传入
+        # POST中的usernamepassword，会对应到form中
         login_form = LoginForm(request.POST)
-        if login_form.is_valid():
-            username = request.POST.get("username", "")
-            password = request.POST.get("password", "")
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return render(request, 'index.html')
-            else:
-                return render(request, 'login.html', {'msg': '用户名或密码错误'})
 
+        # is_valid判断我们字段是否有错执行我们原有逻辑，验证失败跳回login页面
+        if login_form.is_valid():
+            # 取不到时为空，username，password为前端页面name值
+            user_name = request.POST.get("username", "")
+            pass_word = request.POST.get("password", "")
+
+            # 成功返回user对象,失败返回null
+            user = authenticate(username=user_name, password=pass_word)
+
+            # 如果不是null说明验证成功
+            if user is not None:
+                # 只有当用户激活时才给登录
+                if user.is_active:
+                    # login_in 两参数：request, user
+                    # 实际是对request写了一部分东西进去，然后在render的时候：
+                    # request是要render回去的。这些信息也就随着返回浏览器。完成登录
+                    login(request, user)
+                    # 跳转到首页 user request会被带回到首页
+                    # 增加重定向回原网页。
+                    redirect_url = request.POST.get('next', '')
+                    if redirect_url:
+                        return HttpResponseRedirect(redirect_url)
+                    # 跳转到首页 user request会被带回到首页
+                    return HttpResponseRedirect(reverse("index"))
+                # 即用户未激活跳转登录，提示未激活
+                else:
+                    return render(
+                        request, "login.html", {
+                            "msg": "用户名未激活! 请前往邮箱进行激活"})
+            # 仅当用户真的密码出错时
+            else:
+                return render(request, "login.html", {"msg": "用户名或密码错误!"})
         else:
-            return render(request, "login.html", {"login_form": login_form})
+            return render(
+                request, "login.html", {
+                    "login_form": login_form})
