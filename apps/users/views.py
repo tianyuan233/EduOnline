@@ -8,8 +8,8 @@ from django.urls import reverse
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
 from users.forms import LoginForm, RegisterForm
-from users.models import UserProfile
-
+from users.models import UserProfile, EmailVerifyRecord
+from django.http import HttpResponse
 
 # 重写authenticate
 from utils.email_send import send_register_eamil
@@ -55,13 +55,29 @@ class RegisterView(View):
 
             # 加密password进行保存
             user_profile.password = make_password(pass_word)
-            user_profile.save()
+
             send_register_eamil(user_name, "register")
-            return render(request, "login.html", )
+            user_profile.save()
+
+            return render(request, "login.html", {'msg':'请前往邮箱激活后登录'})
         else:
             return render(
                 request, "register.html", {
                     "register_form": register_form})
+
+class ActiveUserView(View):
+    def get(self, request, active_code):
+        all_records = EmailVerifyRecord.objects.filter(code=active_code)
+        if all_records:
+            for record in all_records:
+                email = record.email
+                user = UserProfile.objects.get(email=email)
+                user.is_active = True
+                user.save()
+                return render(request,'login.html',{'msg':'激活成功，请登录'})
+        else:
+            return render(request,'register.html',{'msg':'激活链接无效'})
+
 
 
 class LoginView(View):
