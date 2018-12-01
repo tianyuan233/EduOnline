@@ -52,7 +52,7 @@ def send_register_eamil(email, send_type="register"):
         email_body = loader.render_to_string(
                 "email_register.html",  # 需要渲染的html模板
                 {
-                    "active_code": code  # 参数
+                    "code": code  # 参数
                 }
             )
 
@@ -67,7 +67,7 @@ def send_register_eamil(email, send_type="register"):
         email_body = loader.render_to_string(
             "email_forget.html",  # 需要渲染的html模板
             {
-                "active_code": code  # 参数
+                "code": code  # 参数
             }
         )
         msg = EmailMessage(email_title, email_body, EMAIL_FROM, [email])
@@ -78,7 +78,7 @@ def send_register_eamil(email, send_type="register"):
         email_body = loader.render_to_string(
             "email_update_email.html",  # 需要渲染的html模板
             {
-                "active_code": code  # 参数
+                "code": code  # 参数
             }
         )
         msg = EmailMessage(email_title, email_body, EMAIL_FROM, [email])

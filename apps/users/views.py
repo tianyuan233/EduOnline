@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 # 并集运算
 from django.db.models import Q
@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
-from users.forms import LoginForm, RegisterForm
+from users.forms import LoginForm, RegisterForm, ForgetPwdForm, ModifyPwdForm
 from users.models import UserProfile, EmailVerifyRecord
 from django.http import HttpResponse
 
@@ -52,8 +52,6 @@ class RegisterView(View):
 
             # 默认激活状态为false
             user_profile.is_active = False
-
-            # 加密password进行保存
             user_profile.password = make_password(pass_word)
 
             send_register_eamil(user_name, "register")
@@ -128,3 +126,63 @@ class LoginView(View):
             return render(
                 request, "login.html", {
                     "login_form": login_form})
+
+
+class LogoutView(View):
+    def get(self, request):
+        # django自带的logout
+        logout(request)
+        # 重定向到首页,
+        return HttpResponseRedirect(reverse("index"))
+
+class ForgetPwdView(View):
+    def get(self, request):
+        forgetpwd_form = ForgetPwdForm()
+        return render(request,'forgetpwd.html',{'forgetpwd_form':forgetpwd_form})
+
+    def post(self, request):
+        forgetpwd_form = ForgetPwdForm(request.POST)
+        if forgetpwd_form.is_valid():
+            email = request.POST.get("email", "")
+            send_register_eamil(email, "forget")
+            return render(request, "login.html", {"msg": "重置密码邮件已发送,请注意查收"})
+        else:
+            return render(
+                request, "forgetpwd.html", {
+                    "forgetpwd_form": forgetpwd_form})
+
+
+class ResetPwdView(View):
+    def get(self, request, reset_code):
+        all_records = EmailVerifyRecord.objects.filter(code=reset_code)
+        if all_records:
+            for record in all_records:
+                email = record.email
+                return render(request, "password_reset.html", {"rest_code": reset_code,"email":email})
+
+
+class ModifyPwdView(View):
+    def post(self, request):
+        modifypwd_form = ModifyPwdForm(request.POST)
+        if modifypwd_form.is_valid():
+            pwd1 = request.POST.get("password1", "")
+            pwd2 = request.POST.get("password2", "")
+            email = request.POST.get("email", "")
+
+            if pwd1 != pwd2:
+                return render(
+                    request, "password_reset.html", {"msg": "密码不一致"})
+
+
+            user = UserProfile.objects.get(email=email)
+            # 加密成密文
+            user.password = make_password(pwd2)
+            # save保存到数据库
+            user.save()
+            return render(request, "login.html", {"msg": "密码修改成功，请登录"})
+        else:
+            email = request.POST.get("email", "")
+            return render(
+                request, "password_reset.html", {
+                    "email": email, "modifypwd_form": modifypwd_form})
+
