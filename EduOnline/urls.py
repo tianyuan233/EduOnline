@@ -17,6 +17,7 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
 import xadmin
+from organization.views import OrgListView
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView, LogoutView
 
 urlpatterns = [
@@ -30,4 +31,6 @@ urlpatterns = [
     path('forget/', ForgetPwdView.as_view(), name="forget_pwd"),
     re_path('reset/(?P<reset_code>.*)/', ResetPwdView.as_view(), name="pwd_reset"),
     path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
+
+    path('orglist/', OrgListView.as_view(), name='org_list')
 ]

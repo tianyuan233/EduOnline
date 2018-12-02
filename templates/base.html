@@ -135,14 +135,14 @@
     <div class="footer">
         <div class="wp">
             <ul class="cont">
-                <li class="logo"><a href="{% url 'index' %}"><img src="{% static 'images/footlogo.png' %}"/></a></li>
-                <li class="code"><img src="{% static 'images/code.jpg' %}"/>
-                    <p class="center">扫描关注微信</p></li>
+                <li class="logo">
+                    <a href="{% url 'index' %}"><img src="{% static 'images/footlogo.png' %}"/></a>
+                </li>
                 <li class="third"><img class="fl" src="{% static 'images/tell.png' %}"/>
                     <p class="tell">23333333</p>
-                    <p class="time">周一至周日 9:00-18:00</p></li>
+                    <p class="time">周一至周日 9:00-18:00</p>
+                </li>
             </ul>
-
         </div>
         <p class="line"></p>
         <div class="wp clear">
@@ -151,15 +151,6 @@
         </div>
     </div>
 </footer>
-
-<section>
-    <ul class="sidebar">
-        <li class="qq">
-            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2023525077&site=qq&menu=yes"></a>
-        </li>
-        <li class="totop"></li>
-    </ul>
-</section>
 
 <script src="{% static 'js/selectUi.js' %}" type='text/javascript'></script>
 <script src="{% static 'js/deco-common.js' %}" type='text/javascript'></script>
