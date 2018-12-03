@@ -15,12 +15,17 @@ Including another URLconf
 """
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
+from django.views.static import serve
 
 import xadmin
+from EduOnline.settings import MEDIA_ROOT
 from organization.views import OrgListView
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView, LogoutView
 
 urlpatterns = [
+    #处理上传图片的URL
+    re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+    #后台
     path('xadmin/', xadmin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('login/', LoginView.as_view(), name='login'),
