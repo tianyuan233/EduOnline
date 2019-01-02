@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'courses',
     'operation',
     'organization',
+    'pure_pagination',
     'xadmin',
     'crispy_forms',
     'captcha'
@@ -151,3 +152,11 @@ EMAIL_HOST_USER = "1406282384@qq.com"
 EMAIL_HOST_PASSWORD = "hyhotmywiscpbaaa"
 EMAIL_USE_TLS = True
 EMAIL_FROM = "1406282384@qq.com"
+
+#分页配置
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 5,
+    'MARGIN_PAGES_DISPLAYED': 2,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}
