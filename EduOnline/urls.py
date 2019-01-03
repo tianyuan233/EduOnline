@@ -19,13 +19,12 @@ from django.views.static import serve
 
 import xadmin
 from EduOnline.settings import MEDIA_ROOT
-from organization.views import OrgListView
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetPwdView, ModifyPwdView, LogoutView
 
 urlpatterns = [
-    #处理上传图片的URL
+    # 处理上传图片的URL
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
-    #后台
+    # 后台
     path('xadmin/', xadmin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('login/', LoginView.as_view(), name='login'),
@@ -37,5 +36,6 @@ urlpatterns = [
     re_path('reset/(?P<reset_code>.*)/', ResetPwdView.as_view(), name="pwd_reset"),
     path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
-    path('orglist/', OrgListView.as_view(), name='org_list')
+    #课程机构url配置
+    path('org/', include('organization.urls'))
 ]
