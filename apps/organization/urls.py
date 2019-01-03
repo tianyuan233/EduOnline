@@ -10,7 +10,7 @@
 
 from django.urls import path, re_path
 
-from organization.views import OrgListView, AddUserAskView
+from organization.views import OrgListView, AddUserAskView, OrgHomeView
 
 app_name = "organization"
 
@@ -18,12 +18,12 @@ urlpatterns = [
 
     # 课程机构列表url
     path('list/', OrgListView.as_view(), name="org_list"),
-    #
+
     # 添加我要学习
     path('add_ask/', AddUserAskView.as_view(), name="add_ask"),
-    #
-    # # home页面,取纯数字
-    # re_path('home/(?P<org_id>\d+)/', OrgHomeView.as_view(), name="org_home"),
+
+    # home页面,取纯数字
+    re_path('home/(?P<org_id>\d+)/', OrgHomeView.as_view(), name="org_home"),
     #
     # # 访问课程
     # re_path('course/(?P<org_id>\d+)/', OrgCourseView.as_view(), name="org_course"),
