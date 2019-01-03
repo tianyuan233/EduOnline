@@ -100,7 +100,7 @@
                                         <li class="c8" style="padding-left:18px;">{{ course_org.address }}</li>
                                         <li class="pic10" style="padding-left:18px;">经典课程：
                                             {% for course in course_org.course_set.get_queryset %}
-                                                <a href="{% url 'index'%}">{{ course.name }}</a>
+                                                <a href="{% url 'index' %}">{{ course.name }}</a>
                                             {% endfor %}
 
                                         </li>
@@ -183,7 +183,7 @@
                 $.ajax({
                     cache: false,
                     type: "POST",
-                    url: "{% url "index" %}",
+                    url: "{% url "org:add_ask" %}",
                     data: $('#jsStayForm').serialize(),
                     async: true,
                     success: function (data) {

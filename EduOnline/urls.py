@@ -36,6 +36,6 @@ urlpatterns = [
     re_path('reset/(?P<reset_code>.*)/', ResetPwdView.as_view(), name="pwd_reset"),
     path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
-    #课程机构url配置
-    path('org/', include('organization.urls'))
+    # 课程机构url配置
+    path('org/', include('organization.urls', namespace='org'))
 ]
