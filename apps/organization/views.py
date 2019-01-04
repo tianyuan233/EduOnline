@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from pure_pagination import Paginator, PageNotAnInteger
 
+from operation.models import UserFavorite
 from organization.forms import UserAskForm
 from organization.models import CityDict, CourseOrg
 
@@ -73,3 +74,25 @@ class OrgHomeView(View):
                           'all_teachers': all_teachers
 
                       })
+
+class OrgCourseView(View):
+    def get(self, request, org_id):
+        # 向前端传值，表明现在在home页
+        current_page = "course"
+        # 根据id取到课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
+        all_courses = course_org.course_set.all()
+        # 向前端传值说明用户是否收藏
+        has_fav = False
+        # 必须是用户已登录我们才需要判断。
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+        return render(request, 'org-detail-course.html', {
+            'all_courses': all_courses,
+            'course_org': course_org,
+            "current_page": current_page,
+            "has_fav": has_fav,
+        })
+
