@@ -71,7 +71,8 @@ class OrgHomeView(View):
         return render(request, 'org-detail-homepage.html',
                       {
                           'all_courses': all_courses,
-                          'all_teachers': all_teachers
+                          'all_teachers': all_teachers,
+                          'course_org': course_org,
 
                       })
 
@@ -91,6 +92,20 @@ class OrgCourseView(View):
                 has_fav = True
         return render(request, 'org-detail-course.html', {
             'all_courses': all_courses,
+            'course_org': course_org,
+            "current_page": current_page,
+            "has_fav": has_fav,
+        })
+
+class OrgDescView(View):
+    def get(self, request, org_id):
+        # 向前端传值，表明现在在home页
+        current_page = "desc"
+        # 根据id取到课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        has_fav = True
+
+        return render(request, 'org-detail-course.html', {
             'course_org': course_org,
             "current_page": current_page,
             "has_fav": has_fav,
