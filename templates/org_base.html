@@ -112,11 +112,8 @@
                 <li class="{% ifequal current_page "teacher" %}active2{% endifequal %}"><a href="{% url 'org:org_teacher' course_org.id %}">机构讲师</a></li>
 			</ul>
 		</div>
-
         {% block right_form %}
-
-{% endblock %}
-
+        {% endblock %}
 </section>
 <!--sidebar start-->
 <section>
@@ -135,7 +132,6 @@
 <script type="text/javascript" src="{% static '' %}js/plugins/laydate/laydate.js"></script>
 <script src="{% static 'js/plugins/layer/layer.js' %}"></script>
 <script src="{% static 'js/plugins/queryCity/js/public.js' %}" type="text/javascript"></script>
-
 <script type="text/javascript" src="{% static 'js/plugins/jquery.raty.js' %}"></script>
 <script type="text/javascript">
     //收藏分享

@@ -65,29 +65,26 @@ class OrgHomeView(View):
     """机构首页"""
 
     def get(self, request, org_id):
+        current_page = 'home'
         course_org = CourseOrg.objects.get(id=int(org_id))
         all_courses = course_org.course_set.all()[:3]
         all_teachers = course_org.teacher_set.all()
-        print(all_teachers)
         return render(request, 'org-detail-homepage.html',
                       {
                           'all_courses': all_courses,
                           'all_teachers': all_teachers,
                           'course_org': course_org,
+                          'current_page':current_page
 
                       })
 
 class OrgCourseView(View):
     def get(self, request, org_id):
-        # 向前端传值，表明现在在home页
         current_page = "course"
-        # 根据id取到课程机构
+
         course_org = CourseOrg.objects.get(id=int(org_id))
-        # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
         all_courses = course_org.course_set.all()
-        # 向前端传值说明用户是否收藏
         has_fav = False
-        # 必须是用户已登录我们才需要判断。
         if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
@@ -100,9 +97,7 @@ class OrgCourseView(View):
 
 class OrgDescView(View):
     def get(self, request, org_id):
-        # 向前端传值，表明现在在home页
         current_page = "desc"
-        # 根据id取到课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
         has_fav = False
 
@@ -127,10 +122,12 @@ class OrgTeacherView(View):
         if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
+
+        print(current_page)
         return render(request, 'org-detail-teachers.html', {
             'all_teachers': all_teachers,
             'course_org': course_org,
-            "current_page": current_page,
-            "has_fav": has_fav
+            'current_page': current_page,
+            'has_fav': has_fav
         })
 
