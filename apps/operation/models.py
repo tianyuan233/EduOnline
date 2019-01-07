@@ -54,7 +54,7 @@ class UserFavorite(models.Model):
         choices=TYPE_CHOICES,
         default=1,
         verbose_name="收藏类型")
-    add_time = models.DateTimeField(default=datetime.now, verbose_name="评论时间")
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="收藏时间")
 
     class Meta:
         verbose_name = "用户收藏"
