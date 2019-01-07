@@ -11,6 +11,7 @@ from organization.models import CityDict, CourseOrg
 
 class OrgListView(View):
     """机构列表页"""
+
     def get(self, request):
         all_orgs = CourseOrg.objects.all()
         org_nums = all_orgs.count()
@@ -32,7 +33,7 @@ class OrgListView(View):
                 all_orgs = all_orgs.order_by("-students")
             elif sort == "courses":
                 all_orgs = all_orgs.order_by("-course_nums")
-        #分页
+        # 分页
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
@@ -54,6 +55,7 @@ class OrgListView(View):
 
 class AddUserAskView(View):
     """用户咨询页"""
+
     def post(self, request):
         userask_form = UserAskForm(request.POST)
         if userask_form.is_valid():
@@ -81,13 +83,14 @@ class OrgHomeView(View):
                           'all_courses': all_courses,
                           'all_teachers': all_teachers,
                           'course_org': course_org,
-                          'current_page':current_page,
-                          'has_fav':has_fav
-
+                          'current_page': current_page,
+                          'has_fav': has_fav
                       })
+
 
 class OrgCourseView(View):
     """机构课程页"""
+
     def get(self, request, org_id):
         current_page = "course"
 
@@ -105,8 +108,10 @@ class OrgCourseView(View):
             "has_fav": has_fav,
         })
 
+
 class OrgDescView(View):
     """机构描述页"""
+
     def get(self, request, org_id):
         current_page = "desc"
         course_org = CourseOrg.objects.get(id=int(org_id))
@@ -124,6 +129,7 @@ class OrgDescView(View):
 
 class OrgTeacherView(View):
     """机构教师页"""
+
     def get(self, request, org_id):
         current_page = "teacher"
         course_org = CourseOrg.objects.get(id=int(org_id))

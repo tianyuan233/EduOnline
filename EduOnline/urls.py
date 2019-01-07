@@ -37,5 +37,8 @@ urlpatterns = [
     path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
     # 课程机构url配置
-    path('org/', include('organization.urls', namespace='org'))
+    path('org/', include('organization.urls', namespace='org')),
+
+    # 课程相关url配置
+    path('course/', include('courses.urls', namespace='course'))
 ]
