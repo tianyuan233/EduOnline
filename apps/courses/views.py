@@ -35,3 +35,15 @@ class CourseListView(View):
             "hot_courses": hot_courses,
             "search_keywords": search_keywords
         })
+
+
+class CourseDetailView(View):
+    pass
+
+
+
+
+
+
+
+
