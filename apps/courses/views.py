@@ -16,6 +16,11 @@ class CourseListView(View):
         search_keywords = request.GET.get('keywords', '')
 
         sort = request.GET.get('sort', "")
+        if sort:
+            if sort == "students":
+                all_courses = all_courses.order_by("-students")
+            elif sort == "hot":
+                all_courses = all_courses.order_by("-click_nums")
 
         try:
             page = request.GET.get('page', 1)
