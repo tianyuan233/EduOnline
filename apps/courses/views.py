@@ -38,8 +38,13 @@ class CourseListView(View):
 
 
 class CourseDetailView(View):
-    pass
-
+    def get(self, request, course_id):
+        """课程详情页"""
+        course = Course.objects.get(id=int(course_id))
+        return render(request, "course-detail.html",
+                      {
+                          "course":course
+                      })
 
 
 

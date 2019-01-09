@@ -9,7 +9,7 @@
 """
 from django.urls import path, re_path
 
-from courses.views import CourseListView
+from courses.views import CourseListView, CourseDetailView
 
 app_name = "courses"
 urlpatterns = [
