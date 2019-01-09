@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block titile %}
-课程详情页 | mtianyan慕课小站
+课程详情页
 {% endblock %}
 
 {% load staticfiles %}
@@ -78,32 +78,33 @@
 						<p>世界名校，课程权威</p>
 					</div>
 					<div class="pic">
-{#                        <a href="{% url 'org:org_home' course.course_org.id %}">#}
-{#                            <img width="150" height="80" src="{{ MEDIA_URL }}{{ course.course_org.image }}"/>#}
-{#                        </a>#}
-{#                    </div>#}
-{#					<a href="{% url 'org:org_home' course.course_org.id %}">#}
-{#                        <h2 class="center" title="清华大学">{{ course.course_org.name }}</h2>#}
-{#                    </a>#}
-{#					<div class="btn  notlogin#}
-{#					     "data-favid="14" id="jsRightBtn">#}
-{#                         {% if has_fav_org %}已收藏{% else %}收藏{% endif %}#}
-{#                    </div>#}
-{#					<div class="clear">#}
-{#						<ul>#}
-{#                            <li>#}
-{#                                <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ course.course_org.course_nums }}</span>#}
-{#                            </li>#}
-{#                            <li>#}
-{#                                <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {{ course.course_org.teacher_set.count }}</span>#}
-{#                            </li>#}
-{#							<li>所在地区：&nbsp;&nbsp;{{ course.course_org.address }}</li>#}
-{#							<li>认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;:#}
-{#                                &nbsp;&nbsp;#}
-{#								    <img title="金牌机构", src="{% static 'images/gold.png' %}"/>#}
-{#							</li>#}
-{#						</ul>#}
-{#					</div>#}
+                        <a href="">
+                            <img width="150" height="80" src="{{ MEDIA_URL }}{{ course.course_org.image }}"/>
+                        </a>
+                    </div>
+{#                        {% url 'org:org_home' course.course_org.id %}#}
+					<a href="">
+                        <h2 class="center" title="{{ course.course_org.name }}">{{ course.course_org.name }}</h2>
+                    </a>
+					<div class="btn  notlogin
+					     "data-favid="14" id="jsRightBtn">
+                         {% if has_fav_org %}已收藏{% else %}收藏{% endif %}
+                    </div>
+					<div class="clear">
+						<ul>
+                            <li>
+                                <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ course.course_org.course_nums }}</span>
+                            </li>
+                            <li>
+                                <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {{ course.course_org.teacher_set.count }}</span>
+                            </li>
+							<li>所在地区：&nbsp;&nbsp;{{ course.course_org.address }}</li>
+							<li>认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;:
+                                &nbsp;&nbsp;
+								    <img title="金牌机构", src="{% static 'images/gold.png' %}"/>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -120,7 +121,7 @@
 				</div>
 				<div class="tab_cont tab_cont1">
                     {% autoescape off %}
-{{ course.detail }}
+                        {{ course.detail }}
                     {% endautoescape %}
 				</div>
 				<div class="tab_cont tab_cont2" >

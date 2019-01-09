@@ -28,7 +28,8 @@ class Course(models.Model):
     image = models.ImageField(
         upload_to="courses/%Y/%m",
         verbose_name="封面图",
-        max_length=100)
+        max_length=100,
+        null=True, blank=True)
     click_nums = models.IntegerField(default=0, verbose_name="点击数")
     category = models.CharField(max_length=20, verbose_name="课程类别", default="后端开发")
     tag = models.CharField(max_length=15, verbose_name="课程标签", default="")
