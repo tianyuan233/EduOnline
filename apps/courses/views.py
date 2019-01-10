@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from courses.models import Course
+from operation.models import UserFavorite
 
 
 class CourseListView(View):
@@ -52,10 +53,22 @@ class CourseDetailView(View):
         else:
             relate_courses = []
 
+        # 是否收藏课程
+        has_fav_course = False
+        has_fav_org = False
+        # 必须是用户已登录我们才需要判断。
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=course.id, fav_type=1):
+                has_fav_course = True
+            if UserFavorite.objects.filter(user=request.user, fav_id=course.course_org.id, fav_type=2):
+                has_fav_org = True
+
         return render(request, "course-detail.html",
                       {
                           "course":course,
                           "relate_courses": relate_courses,
+                          "has_fav_course": has_fav_course,
+                          "has_fav_org": has_fav_org,
                       })
 
 
