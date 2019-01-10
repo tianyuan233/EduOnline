@@ -44,9 +44,18 @@ class CourseDetailView(View):
         course.click_nums += 1
         course.save()
 
+        # 取出标签找到标签相同的course
+        tag = course.tag
+        if tag:
+            # 从1开始否则会推荐自己
+            relate_courses = Course.objects.filter(tag=tag)[1:2]
+        else:
+            relate_courses = []
+
         return render(request, "course-detail.html",
                       {
-                          "course":course
+                          "course":course,
+                          "relate_courses": relate_courses,
                       })
 
 
