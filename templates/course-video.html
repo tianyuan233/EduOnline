@@ -71,7 +71,10 @@
                     </ul>
                 </div>
                 <div id="notice" class="clearfix">
-                    <div class="l"> <strong>课程公告:</strong> <a  href="javascript:void(0)">Spring的文档以及相关的jar文件已上传</a> </div>
+                    <div class="l">
+                        <strong>课程公告:</strong>
+                        <a  href="javascript:void(0)">Spring的文档以及相关的jar文件已上传</a>
+                    </div>
                 </div>
 
                 <div class="mod-chapters">
@@ -84,7 +87,7 @@
 
                             {% for video in lesson.video_set.get_queryset  %}
                             <li>
-                                <a target="_blank" href='{% url 'course:video_play' video.id %}' class="J-media-item studyvideo">{{ video.name }} ({{ video.learn_times }})
+                                <a target="_blank" href='' class="J-media-item studyvideo">{{ video.name }} ({{ video.learn_times }})
                                     <i class="study-state"></i>
                                 </a>
                             </li>

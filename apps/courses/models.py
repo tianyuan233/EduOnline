@@ -62,7 +62,7 @@ class Video(models.Model):
     # 因为一个章节对应很多视频。所以在视频表中将章节设置为外键。
     # 作为一个字段来存储让我们可以知道这个视频对应哪个章节.
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="章节")
-    url = models.CharField(max_length=200, default="http://blog.mtianyan.cn/", verbose_name="访问地址")
+    url = models.CharField(max_length=200, default="http://qwe", verbose_name="访问地址")
     name = models.CharField(max_length=100, verbose_name="视频名")
     # 使用分钟做后台记录(存储最小单位)前台转换
     learn_times = models.IntegerField(default=0, verbose_name="学习时长(分钟数)")
