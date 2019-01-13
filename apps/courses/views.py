@@ -79,6 +79,7 @@ class CourseInfoView(LoginRequiredMixin, View):
     def get(self, request, course_id):
         # 此处的id为表默认为我们添加的值。
         course = Course.objects.get(id=int(course_id))
+        all_resources = CourseResource.objects.filter(course=course)
 
         # 查询用户是否开始学习了该课，如果还未学习则，加入用户课程表
         user_courses = UserCourse.objects.filter(user=request.user, course=course)
