@@ -133,7 +133,6 @@ class CommentsView(View):
         })
 
 
-
 # ajax方式添加评论
 class AddCommentsView(View):
     def post(self, request):
@@ -146,7 +145,7 @@ class AddCommentsView(View):
             course_comments = CourseComments()
             # get只能取出一条数据，如果有多条抛出异常。没有数据也抛异常
             # filter取一个列表出来，queryset。没有数据返回空的queryset不会抛异常
-            course = Course.objects.get(id = int(course_id))
+            course = Course.objects.get(id=int(course_id))
             # 外键存入要存入对象
             course_comments.course = course
             course_comments.comments = comments
@@ -155,4 +154,3 @@ class AddCommentsView(View):
             return HttpResponse('{"status":"success", "msg":"评论成功"}', content_type='application/json')
         else:
             return HttpResponse('{"status":"fail", "msg":"评论失败"}', content_type='application/json')
-
