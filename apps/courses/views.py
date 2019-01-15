@@ -92,6 +92,7 @@ class CourseInfoView(LoginRequiredMixin, View):
 
         # 选出学了这门课的学生关系
         user_courses = UserCourse.objects.filter(course=course)
+
         # 从关系中取出user_id
         user_ids = [user_course.user_id for user_course in user_courses]
         # 这些用户学了的课程,外键会自动有id，取到字段
@@ -108,7 +109,10 @@ class CourseInfoView(LoginRequiredMixin, View):
         })
 
 
-class CommentsView(View):
+class CommentsView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
         all_resources = CourseResource.objects.filter(course=course)
