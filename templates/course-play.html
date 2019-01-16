@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block titile %}
-{{ video.name }} | mtianyan慕课小站
+{{ video.name }}
 {% endblock %}
 
 {% load staticfiles %}
@@ -13,7 +13,7 @@
 			<ul>
 				<li><a href="{% url 'index' %}">首页</a>></li>
                 <li><a href="{% url 'course:list' %}">公开课程</a>></li>
-				<li><a href="{% url 'course:course_detail' course.id %}">{{ course.name }}</a>></li>
+				<li><a href="{% url 'course:detail' course.id %}">{{ course.name }}</a>></li>
                 <li>{{ video.name }}</li>
 			</ul>
 		</div>
@@ -103,11 +103,11 @@
                     <div class="box mb40">
                         <h4>讲师提示</h4>
                         <div class="teacher-info">
-                            <a href="{% url 'org:teacher_detail' course.teacher.id  %}" target="_blank">
+                            <a href="" target="_blank">
                                 <img src='{{ MEDIA_URL }}{{ course.teacher.image }}' width='80' height='80' />
                             </a>
         <span class="tit">
-          <a href="{% url 'org:teacher_detail' course.teacher.id  %}" target="_blank">{{ course.teacher.name }}</a>
+          <a href="" target="_blank">{{ course.teacher.name }}</a>
         </span>
                             <span class="job">{{ course.teacher.work_position }}</span>
                         </div>
@@ -135,7 +135,7 @@
 
                                     {% for relate_course in relate_courses  %}
                                     <li class="curr">
-                                        <a href="{% url 'course:course_detail' relate_course.id %}" target="_blank">
+                                        <a href="{% url 'course:detail' relate_course.id %}" target="_blank">
                                             <img src="{{ MEDIA_URL }}{{ relate_course.image }}" alt="{{ relate_course.name }}">
                                             <span class="name autowrap">{{ relate_course.name }}</span>
                                         </a>
